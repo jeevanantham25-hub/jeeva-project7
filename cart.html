@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f1f3f6;
+}
+
+/* Navbar */
+
+.navbar{
+    background:#2874f0;
+    color:white;
+    padding:12px 20px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* Cart Container */
+
+.container{
+    display:flex;
+    gap:20px;
+    padding:20px;
+}
+
+/* Left Cart Items */
+
+.cart-items{
+    flex:2;
+    background:white;
+    padding:20px;
+    border-radius:5px;
+}
+
+.item{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid #ddd;
+    padding:15px 0;
+}
+
+.item img{
+    width:100px;
+    height:100px;
+    object-fit:cover;
+}
+
+.details{
+    flex:1;
+    margin-left:15px;
+}
+
+.qty{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:10px;
+}
+
+.qty button{
+    padding:5px 10px;
+    cursor:pointer;
+}
+
+/* Price Box */
+
+.price-box{
+    flex:1;
+    background:white;
+    padding:20px;
+    border-radius:5px;
+    height:fit-content;
+}
+
+.checkout{
+    background:#fb641b;
+    color:white;
+    border:none;
+    padding:12px;
+    width:100%;
+    font-size:16px;
+    cursor:pointer;
+    border-radius:4px;
+}
+
+.checkout:hover{
+    background:#e85a19;
+}
+
+.remove{
+    color:red;
+    cursor:pointer;
+    margin-top:10px;
+    display:inline-block;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">My Cart</div>
+
+<div class="container">
+
+    <!-- Cart Items -->
+    <div class="cart-items" id="cartItems">
+
+        <div class="item">
+            <img src="https://picsum.photos/150?1">
+
+            <div class="details">
+                <h3>Smart Phone</h3>
+                <p>₹12,999</p>
+
+                <div class="qty">
+                    <button onclick="changeQty(-1)">−</button>
+                    <span id="qty">1</span>
+                    <button onclick="changeQty(1)">+</button>
+                </div>
+
+                <span class="remove" onclick="removeItem()">Remove</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Price Box -->
+    <div class="price-box">
+
+        <h3>Price Details</h3>
+        <hr>
+
+        <p>Price: ₹<span id="price">12999</span></p>
+        <p>Delivery: Free</p>
+
+        <hr>
+
+        <h3>Total: ₹<span id="total">12999</span></h3>
+
+        <button class="checkout">Place Order</button>
+
+    </div>
+
+</div>
+
+<script>
+
+let qty = 1;
+let price = 12999;
+
+function changeQty(num){
+
+    qty += num;
+
+    if(qty < 1) qty = 1;
+
+    document.getElementById("qty").innerText = qty;
+
+    document.getElementById("total").innerText = qty * price;
+}
+
+function removeItem(){
+    document.getElementById("cartItems").innerHTML = "<h2>Cart is Empty</h2>";
+    document.getElementById("total").innerText = 0;
+}
+
+</script>
+
+</body>
+</html>

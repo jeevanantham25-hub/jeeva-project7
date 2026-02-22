@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electronics</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e0ecff, #f7f9fc);
+}
+
+.navbar{
+    background:#2874f0;
+    color:white;
+    padding:10px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.cart{
+    cursor:pointer;
+}
+
+.title{
+    padding:20px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.products{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform: translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+
+.price{
+    color:green;
+    font-weight:bold;
+}
+
+button{
+    background:#ff9f00;
+    border:none;
+    padding:10px;
+    width:100%;
+    margin-top:10px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#fb641b;
+}
+.title{
+    text-align:center;
+    margin:30px 20px;
+    padding:20px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* Main Heading */
+
+.title h1{
+    margin:0;
+    font-size:32px;
+    font-weight:bold;
+    background: linear-gradient(90deg,#2874f0,#ff6a00);
+    -webkit-background-clip:text;
+    color:transparent;
+    letter-spacing:1px;
+}
+
+/* Subtitle */
+
+.title p{
+    margin-top:8px;
+    color:#555;
+    font-size:14px;
+}
+
+/* Decorative Line */
+
+.title::after{
+    content:"";
+    display:block;
+    width:80px;
+    height:4px;
+    background:#2874f0;
+    margin:12px auto 0;
+    border-radius:2px;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="logo" onclick="window.location.href='index.html'">FlipShop</div>
+
+    <div class="cart" onclick="window.location.href='cart.html'">
+        🛒 Cart (<span id="count">0</span>)
+    </div>
+</div>
+
+<div class="title">
+    <h1>Electronics Store</h1>
+    <p>Latest Gadgets & Accessories</p>
+</div>
+<div class="products" id="productList"></div>
+
+<script>
+
+let products = [
+"Smartphone","Laptop","Smart Watch","Headphones","Bluetooth Speaker","Tablet",
+"Gaming Mouse","Mechanical Keyboard","Monitor","Printer","Power Bank","Earbuds",
+"DSLR Camera","Tripod","External Hard Disk","USB Pendrive","Router","Projector",
+"Smart TV","Home Theater","VR Headset","Drone Camera","Graphics Card","Microphone"
+];
+
+let prices = [
+12999,45999,2999,1499,1999,18999,
+799,1999,8999,6999,999,2499,
+35999,1499,4999,599,1999,15999,
+42999,8999,4999,25999,34999,2999
+];
+
+/* Images for each product */
+
+let images = [
+"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9", // Smartphone
+"https://images.unsplash.com/photo-1517336714731-489689fd1ca8", // Laptop
+"https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b", // Smart Watch
+"https://images.unsplash.com/photo-1518444065439-e933c06ce9cd", // Headphones
+"https://images.unsplash.com/photo-1585386959984-a41552231658", // Bluetooth Speaker
+"https://images.unsplash.com/photo-1587829741301-dc798b83add3", // Tablet
+"https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7", // Gaming Mouse
+"https://images.unsplash.com/photo-1587202372775-e229f172b9d7", // Keyboard
+"https://images.unsplash.com/photo-1527443224154-c4a3942d3acf", // Monitor
+"https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04", // Printer
+"https://images.unsplash.com/photo-1609592424823-4b4b8bba9c68", // Power Bank
+"https://images.unsplash.com/photo-1588423771073-b8903fbb85b5", // Earbuds
+"https://images.unsplash.com/photo-1519183071298-a2962e402c2d", // DSLR Camera
+"https://images.unsplash.com/photo-1526178613658-3f1622045557", // Tripod
+"https://images.unsplash.com/photo-1591488320449-011701bb6704", // External Hard Disk
+"https://images.unsplash.com/photo-1580894894513-541e068a3e2b", // USB Drive
+"https://images.unsplash.com/photo-1606904825846-647eb07f5be2", // Router
+"https://images.unsplash.com/photo-1593359677879-a4bb92f829d1", // Projector
+"https://images.unsplash.com/photo-1593784991095-a205069470b6", // Smart TV
+"https://images.unsplash.com/photo-1583225159084-3b8d0dbe9f77", // Home Theater
+"https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac", // VR Headset
+"https://images.unsplash.com/photo-1508614589041-895b88991e3e", // Drone
+"https://images.unsplash.com/photo-1587202372616-b43abea06c2a", // Graphics Card
+"https://images.unsplash.com/photo-1580894908361-967195033215"  // Microphone
+];
+
+
+let productHTML = "";
+
+for(let i=0;i<products.length;i++){
+
+productHTML += `
+<div class="card">
+    <img src="${images[i]}">
+    <h3>${products[i]}</h3>
+    <p class="price">₹${prices[i]}</p>
+    <button onclick="addCart()">Add to Cart</button>
+</div>
+`;
+
+}
+
+document.getElementById("productList").innerHTML = productHTML;
+
+
+/* Cart */
+
+function addCart(){
+
+    let cartCount = localStorage.getItem("cartCount");
+
+    if(cartCount == null){
+        cartCount = 0;
+    }
+
+    cartCount++;
+
+    localStorage.setItem("cartCount", cartCount);
+
+    document.getElementById("count").innerText = cartCount;
+}
+
+window.onload = function(){
+
+    let cartCount = localStorage.getItem("cartCount");
+
+    if(cartCount == null){
+        cartCount = 0;
+    }
+
+    document.getElementById("count").innerText = cartCount;
+}
+
+</script>
+
+</body>
+</html>

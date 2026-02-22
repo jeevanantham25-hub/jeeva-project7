@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Store</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e0ecff, #f7f9fc);
+}
+
+/* Navbar */
+
+.navbar{
+    background:#2874f0;
+    color:white;
+    padding:12px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.cart{
+    cursor:pointer;
+}
+
+/* Title */
+
+.title{
+    text-align:center;
+    margin:30px 20px;
+    padding:20px;
+    background: rgba(255,255,255,0.9);
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.15);
+}
+
+.title h1{
+    margin:0;
+    font-size:32px;
+    background: linear-gradient(90deg,#2874f0,#ff6a00);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.title p{
+    margin-top:8px;
+    color:#555;
+}
+
+/* Products */
+
+.products{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.price{
+    color:green;
+    font-weight:bold;
+}
+
+/* Buttons */
+
+button{
+    background:#ff9f00;
+    border:none;
+    padding:10px;
+    width:100%;
+    margin-top:10px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#fb641b;
+}
+
+.order-btn{
+    background:#2874f0;
+}
+
+.order-btn:hover{
+    background:#1c5ed6;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<div class="navbar">
+    <div class="logo" onclick="window.location.href='index.html'">FlipShop</div>
+
+    <div class="cart" onclick="window.location.href='cart.html'">
+        🛒 Cart (<span id="count">0</span>)
+    </div>
+</div>
+
+<!-- Title -->
+
+<div class="title">
+    <h1>Mobile Store</h1>
+    <p>Latest Smartphones at Best Prices</p>
+</div>
+
+<!-- Products -->
+
+<div class="products" id="productList"></div>
+
+<script>
+
+let products = [
+"iPhone 15","Samsung Galaxy S23","OnePlus 11","Realme Narzo","Redmi Note 12",
+"Vivo V29","Oppo Reno 10","iQOO Neo","Motorola Edge","Nokia G42",
+"Samsung Galaxy A54","Realme GT","Redmi 13C","Vivo T1","Oppo A78",
+"iPhone 14","Samsung F54","Poco X5","OnePlus Nord CE","Realme C55",
+"Redmi Note 11","Vivo Y100","Oppo F21","Nokia C32"
+];
+
+let prices = [
+79999,69999,56999,15999,14999,
+26999,29999,34999,27999,12999,
+38999,35999,9999,19999,18999,
+69999,24999,19999,24999,12999,
+13999,22999,17999,9999
+];
+
+let images = [
+"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+"https://images.unsplash.com/photo-1605236453806-6ff36851218e",
+"https://images.unsplash.com/photo-1580910051074-3eb694886505",
+"https://images.unsplash.com/photo-1598327105666-5b89351aff97",
+"https://images.unsplash.com/photo-1585060544812-6b45742d762f",
+"https://images.unsplash.com/photo-1592750475338-74b7b21085ab",
+"https://images.unsplash.com/photo-1601972599720-36938d4ecd31",
+"https://images.unsplash.com/photo-1580910051074-3eb694886505",
+"https://images.unsplash.com/photo-1592899677977-9c10ca588bbd",
+"https://images.unsplash.com/photo-1603898037225-1c2c4e2c7a4c",
+"https://images.unsplash.com/photo-1605236453806-6ff36851218e",
+"https://images.unsplash.com/photo-1598327105666-5b89351aff97",
+"https://images.unsplash.com/photo-1585060544812-6b45742d762f",
+"https://images.unsplash.com/photo-1592750475338-74b7b21085ab",
+"https://images.unsplash.com/photo-1601972599720-36938d4ecd31",
+"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+"https://images.unsplash.com/photo-1592899677977-9c10ca588bbd",
+"https://images.unsplash.com/photo-1580910051074-3eb694886505",
+"https://images.unsplash.com/photo-1605236453806-6ff36851218e",
+"https://images.unsplash.com/photo-1598327105666-5b89351aff97",
+"https://images.unsplash.com/photo-1585060544812-6b45742d762f",
+"https://images.unsplash.com/photo-1592750475338-74b7b21085ab",
+"https://images.unsplash.com/photo-1601972599720-36938d4ecd31",
+"https://images.unsplash.com/photo-1603898037225-1c2c4e2c7a4c"
+];
+
+let productHTML = "";
+
+for(let i=0;i<products.length;i++){
+
+productHTML += `
+<div class="card">
+    <img src="${images[i]}">
+    <h3>${products[i]}</h3>
+    <p class="price">₹${prices[i]}</p>
+    <button onclick="addCart()">Add to Cart</button>
+    <button class="order-btn" onclick="window.location.href='placeOrder.html'">Place Order</button>
+</div>
+`;
+
+}
+
+document.getElementById("productList").innerHTML = productHTML;
+
+
+/* Cart */
+
+function addCart(){
+
+    let cartCount = localStorage.getItem("cartCount");
+
+    if(cartCount == null){
+        cartCount = 0;
+    }
+
+    cartCount++;
+
+    localStorage.setItem("cartCount", cartCount);
+
+    document.getElementById("count").innerText = cartCount;
+}
+
+window.onload = function(){
+
+    let cartCount = localStorage.getItem("cartCount");
+
+    if(cartCount == null){
+        cartCount = 0;
+    }
+
+    document.getElementById("count").innerText = cartCount;
+}
+
+</script>
+
+</body>
+</html>

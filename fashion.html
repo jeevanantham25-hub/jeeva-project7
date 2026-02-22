@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fashion</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ffe0ec, #f7f9fc);
+}
+
+.navbar{
+    background:#2874f0;
+    color:white;
+    padding:10px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.cart{
+    cursor:pointer;
+}
+
+.title{
+    padding:20px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.products{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform: translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+
+.price{
+    color:green;
+    font-weight:bold;
+}
+
+button{
+    background:#ff9f00;
+    border:none;
+    padding:10px;
+    width:100%;
+    margin-top:10px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#fb641b;
+}
+ 
+.order-btn{
+    background:#2874f0;   /* Flipkart Blue */
+    color:white;
+}
+
+.order-btn:hover{
+    background:#1c5ed6;
+}
+.title{
+    text-align:center;
+    margin:30px 20px;
+    padding:20px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* Heading */
+
+.title h1{
+    margin:0;
+    font-size:32px;
+    font-weight:bold;
+    background: linear-gradient(90deg,#ff4081,#ff9800);
+    -webkit-background-clip:text;
+    color:transparent;
+    letter-spacing:1px;
+}
+
+/* Subtitle */
+
+.title p{
+    margin-top:8px;
+    color:#555;
+    font-size:14px;
+}
+
+/* Decorative Line */
+
+.title::after{
+    content:"";
+    display:block;
+    width:80px;
+    height:4px;
+    background:#ff4081;
+    margin:12px auto 0;
+    border-radius:2px;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="logo" onclick="window.location.href='index.html'">FlipShop</div>
+
+    <div class="cart" onclick="window.location.href='cart.html'">
+        🛒 Cart (<span id="count">0</span>)
+    </div>
+</div>
+
+<div class="title">
+    <h1>Fashion Collection</h1>
+    <p>Trendy Styles for Every Occasion</p>
+</div>
+
+
+<div class="products" id="productList"></div>
+
+<script>
+
+let products = [
+"Men T-Shirt","Women Dress","Jeans","Jacket","Saree","Kurta",
+"Handbag","Shoes","Formal Shirt","Skirt","Hoodie","Blazer",
+"Sports Shoes","Watch","Cap","Leather Belt","Ethnic Gown","Shorts",
+"Sandals","Sweater","Kids Wear","Backpack","Sunglasses","Party Dress"
+];
+
+let prices = [
+499,1299,999,2499,1799,899,
+1499,2199,899,1099,1599,2999,
+1999,999,399,599,2499,699,
+1299,1599,799,1199,899,1999
+];
+
+/* Images for each product */
+
+let images = [
+"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab", // Men T-Shirt
+"https://images.unsplash.com/photo-1496747611176-843222e1e57c", // Women Dress
+"https://images.unsplash.com/photo-1542272604-787c3835535d", // Jeans
+"https://images.unsplash.com/photo-1551028719-00167b16eac5", // Jacket
+"https://images.unsplash.com/photo-1618354691373-d851c5c3a990", // Saree
+"https://images.unsplash.com/photo-1593032465171-8a6c7b3a8f8c", // Kurta
+"https://images.unsplash.com/photo-1584917865442-de89df76afd3", // Handbag
+"https://images.unsplash.com/photo-1528701800489-20be3c8c9f2c", // Shoes
+"https://images.unsplash.com/photo-1603252109303-2751441dd157", // Formal Shirt
+"https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa", // Skirt
+"https://images.unsplash.com/photo-1578681994506-b8f463449011", // Hoodie
+"https://images.unsplash.com/photo-1593030761757-71fae45fa0e7", // Blazer
+"https://images.unsplash.com/photo-1511556532299-8f662fc26c06", // Sports Shoes
+"https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3", // Watch
+"https://images.unsplash.com/photo-1521369909029-2afed882baee", // Cap
+"https://images.unsplash.com/photo-1605733513597-a8f8341084e6", // Belt
+"https://images.unsplash.com/photo-1594633312681-425c7b97ccd1", // Ethnic Gown
+"https://images.unsplash.com/photo-1562158070-622a5f1f25c2", // Shorts
+"https://images.unsplash.com/photo-1600180758890-6b94519a8ba6", // Sandals
+"https://images.unsplash.com/photo-1581338834647-b0fb40704e21", // Sweater
+"https://images.unsplash.com/photo-1518831959646-742c3a14ebf7", // Kids Wear
+"https://images.unsplash.com/photo-1553062407-98eeb64c6a62", // Backpack
+"https://images.unsplash.com/photo-1511499767150-a48a237f0083", // Sunglasses
+"https://images.unsplash.com/photo-1520975916090-3105956dac38"  // Party Dress
+];
+
+
+let productHTML = "";
+
+for(let i=0;i<products.length;i++){
+
+productHTML += `
+<div class="card">
+    <img src="${images[i]}">
+    <h3>${products[i]}</h3>
+    <p class="price">₹${prices[i]}</p>
+    <button onclick="addCart()">Add to Cart</button>
+    <button class="add order-btn" onclick="window.location.href='placeOrder.html'">Place Order</button>
+</div>
+`;
+
+}
+
+document.getElementById("productList").innerHTML = productHTML;
+
+
+/* Cart */
+
+function addCart(){
+
+    let cartCount = localStorage.getItem("cartCount");
+
+    if(cartCount == null){
+        cartCount = 0;
+    }
+
+    cartCount++;
+
+    localStorage.setItem("cartCount", cartCount);
+
+    document.getElementById("count").innerText = cartCount;
+}
+
+window.onload = function(){
+
+    let cartCount = localStorage.getItem("cartCount");
+
+    if(cartCount == null){
+        cartCount = 0;
+    }
+
+    document.getElementById("count").innerText = cartCount;
+}
+
+</script>
+
+</body>
+</html>
